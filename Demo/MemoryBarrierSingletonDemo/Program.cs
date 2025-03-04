@@ -1,0 +1,1 @@
+Singleton singleton = Singleton.Instance;
