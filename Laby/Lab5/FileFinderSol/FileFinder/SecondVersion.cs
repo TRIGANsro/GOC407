@@ -27,7 +27,10 @@ public class SecondVersion
         {
             try
             {
-                foreach (var file in Directory.EnumerateFiles(root, pattern, SearchOption.AllDirectories))
+                EnumerationOptions options = new EnumerationOptions()
+                    { IgnoreInaccessible = true, RecurseSubdirectories = true, ReturnSpecialDirectories = false };
+
+                foreach (var file in Directory.EnumerateFiles(root, pattern, options))
                 {
                     token.ThrowIfCancellationRequested();
                     await target.SendAsync(file, token);
@@ -108,9 +111,11 @@ public class SecondVersion
 
     private static void PrintSortedResults(List<(string file, int daysOld)> results)
     {
-        foreach (var (file, days) in results.OrderBy(x => x.daysOld))
+        using var outputFile = File.CreateText("vystup.txt");
+
+        foreach (var (file, days) in results.AsParallel().OrderBy(x => x.daysOld))
         {
-            Console.WriteLine($"{file} – {days} dní");
+            outputFile.WriteLine($"{file} – {days} dní");
         }
     }
 }

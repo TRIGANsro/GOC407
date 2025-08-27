@@ -110,9 +110,11 @@ namespace FileFinder
 
         private static void PrintSortedResults(List<(string file, int daysOld)> results)
         {
+            using var outputFile = File.CreateText("vystup.txt");
+
             foreach (var (file, days) in results.OrderBy(x => x.daysOld))
             {
-                Console.WriteLine($"{file} – {days} dní");
+                outputFile.WriteLine($"{file} – {days} dní");
             }
         }
         private static TransformBlock<string, string> CreateFolderScannerBlock(
@@ -126,7 +128,10 @@ namespace FileFinder
 
                     try
                     {
-                        foreach (var file in Directory.EnumerateFiles(folder, pattern, SearchOption.AllDirectories))
+                        EnumerationOptions options = new EnumerationOptions()
+                            { IgnoreInaccessible = true, RecurseSubdirectories = true, ReturnSpecialDirectories = false };
+
+                        foreach (var file in Directory.EnumerateFiles(folder, pattern, options))
                         {
                             token.ThrowIfCancellationRequested();
 

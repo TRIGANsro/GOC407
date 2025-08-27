@@ -17,9 +17,10 @@ class Program
 
         try
         {
-            //await FirstVersion.RunFileAgeAnalyzerAsync(@"E:\zdroje", "*.cs", cts.Token);
-            //await SecondVersion.RunFileAgeAnalyzerAsync(@"E:\zdroje", "*.cs", cts.Token);
-            await FourthVersion.RunFileAgeAnalyzerAsync(@"E:\zdroje", "*.cs", cts.Token);
+            await FirstVersion.RunFileAgeAnalyzerAsync(@"C:\", "*.*", cts.Token);
+            //await SecondVersion.RunFileAgeAnalyzerAsync(@"C:\", "*.*", cts.Token);
+            //await ThirdVersion.RunFileAgeAnalyzerAsync(@"C:\", "*.*", cts.Token);
+            //await FourthVersion.RunFileAgeAnalyzerAsync(@"C:\", "*.*", cts.Token);
         }
         catch (OperationCanceledException)
         {

@@ -136,7 +136,10 @@ namespace FileFinder
                 {
                     try
                     {
-                        foreach (var file in Directory.EnumerateFiles(folder, pattern, SearchOption.AllDirectories))
+                        EnumerationOptions options = new EnumerationOptions()
+                            { IgnoreInaccessible = true, RecurseSubdirectories = true, ReturnSpecialDirectories = false };
+
+                        foreach (var file in Directory.EnumerateFiles(folder, pattern, options))
                         {
                             token.ThrowIfCancellationRequested();
 

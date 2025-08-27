@@ -10,7 +10,9 @@ public class FirstVersion
         {
             try
             {
-                return Directory.EnumerateFiles(path, searchPattern, SearchOption.AllDirectories);
+                EnumerationOptions options = new EnumerationOptions()
+                    { IgnoreInaccessible = true, RecurseSubdirectories = true, ReturnSpecialDirectories = false };
+                return Directory.EnumerateFiles(path, searchPattern, options);
             }
             catch (Exception ex)
             {
@@ -94,9 +96,10 @@ public class FirstVersion
 
     private static void PrintSortedResults(List<(string file, int daysOld)> results)
     {
+        using var outputFile = File.CreateText("vystup.txt");
         foreach (var (file, days) in results.OrderBy(x => x.daysOld))
         {
-            Console.WriteLine($"{file} – {days} dní");
+            outputFile.WriteLine($"{file} – {days} dní");
         }
     }
 }
